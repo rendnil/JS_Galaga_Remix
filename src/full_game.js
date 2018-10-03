@@ -32,23 +32,23 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 
-  //ship specs
+  //initial ship specs
   let shipX = canvas.width/2
   let shipY = canvas.height * (0.9)
-  let xFromCenter = 12.5
-  let yUpFromCenter = 33
-  let yDownFromCenter = 17
 
   let shipDx = 5
   let shipDy = 5
 
-  //bullet specs
+  //create player
+  let player = new Player({x: shipX, y:shipY, radius: 25, dx: shipDx, dy:shipDy})
+
+  //initial bullet specs
   let bulletRadius = 3
   let bulletDy = 5
   let bulletDelay = 5
 
 
-  //rock specs
+  //initial rock specs
   let rockRadius = 10
   let rockDy = 2
   let rockDelay = 120
@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   let timer = 0
 
+  //button presses checks
   let rightPressed = false
   let leftPressed = false
   let downPressed = false
@@ -90,23 +91,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
   function drawShip(){
-    ctx.beginPath()
-    //ctx.drawImage(shipImage, shipX-xFromCenter, shipY-yUpFromCenter, 50, 75)
-    ctx.drawImage(shipImage, shipX-xFromCenter, shipY-yUpFromCenter, xFromCenter*2, yDownFromCenter + yDownFromCenter)
-    // ctx.moveTo(shipX, shipY-yUpFromCenter)
-    // ctx.lineTo(shipX - xFromCenter, shipY+yDownFromCenter)
-    // ctx.lineTo(shipX + xFromCenter, shipY + yDownFromCenter)
-    // ctx.fillStyle = "rgba(255, 255, 255, 1)"
-    // ctx.fill()
-    ctx.closePath()
-
+    player.render(ctx, shipImage)
   }
 
   function drawInitialBullet(){
-    let newBullet = new Bullet({x: shipX, y:(shipY-yUpFromCenter), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
-
-
-    newBullet.renderSingle(ctx)
+    let newBullet = new Bullet({x: player.x, y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
+    newBullet.renderSingle(ctx, rayImage)
 
     //play the laser
     //laser.play()
@@ -142,7 +132,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function checkShipCollision(){
     rockArray.forEach((rock)=>{
 
-      if((rock.x>(shipX-xFromCenter)) && (rock.x<(shipX+xFromCenter)) && (rock.y> (shipY-yUpFromCenter)) && (rock.y< (shipY+yDownFromCenter)) ){
+      if((rock.x>(player.x-player.radius)) && (rock.x<(player.x+player.radius)) && (rock.y> (player.y-player.radius)) && (rock.y< (player.y+player.radius)) ){
         //alert("you suck")
         gameInProgress = false
         canvas.style = "display:none"
@@ -199,24 +189,24 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
     //right movement
-    if (rightPressed && ((shipX+xFromCenter) < canvas.width)){
-      shipX +=shipDx
+    if (rightPressed && ((player.x+player.radius) < canvas.width)){
+      player.x +=player.dx
     }
 
     //left movement
-    if (leftPressed && (shipX>xFromCenter)){
-      shipX -=shipDx
+    if (leftPressed && (player.x>player.radius)){
+      player.x -= player.dx
     }
 
     //up movement
-    if (upPressed && (shipY>yUpFromCenter)){
-      shipY -= shipDy
-      ctx.drawImage(burnerImage,shipX-(xFromCenter*0.75), shipY+yDownFromCenter, 20, 20)
+    if (upPressed && (player.y>player.radius)){
+      player.y -= player.dy
+      ctx.drawImage(burnerImage,player.x-(player.radius*0.4), player.y+player.radius, 20, 20)
     }
 
     //down movement
-    if (downPressed && ((shipY+yDownFromCenter)<canvas.height)){
-      shipY += shipDy
+    if (downPressed && ((player.y+player.radius)<canvas.height)){
+      player.y += player.dy
 
     }
 
