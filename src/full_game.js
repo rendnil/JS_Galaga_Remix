@@ -28,9 +28,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const ship4Image = document.getElementById("ship4-img")
   const xwingImage = document.getElementById("xwing-img")
   const tiefighterImage = document.getElementById("tie-fighter-img")
+  const droidfighterImage = document.getElementById("doid-fighter-img")
 
 
   let laser = new Sound("./public/laser3.wav")
+
+  document.addEventListener("keydown", keyDownHandler, false)
+  document.addEventListener("keyup", keyUpHandler, false)
 
   //ctx.canvas.width = window.innerWidth
   //ctx.canvas.height = window.innerHeight
@@ -61,7 +65,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   //score
   let hitCounter = 0
 
-
+  //frame timer
   let timer = 0
 
   //button presses checks
@@ -85,13 +89,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function drawScore() {
   ctx.font = "12px 'Press Start 2p'";
   ctx.fillStyle = "white";
-  ctx.fillText("Score: "+hitCounter, 8, 20);
+  ctx.fillText("Score:"+hitCounter, 8, 20);
   }
 
   function drawHitPercentage(){
     ctx.font = "12px 'Press Start 2p'";
     ctx.fillStyle = "white";
-    ctx.fillText("Hit %: "+Math.floor((100*hitCounter/bulletCounter))+"%", 340, 20);
+    ctx.fillText("Hit%: "+Math.floor((100*hitCounter/bulletCounter))+"%", 340, 20);
   }
 
 
@@ -112,7 +116,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     newBullet.renderSingle(ctx, rayImage)
     newBullet.renderSingle(ctx, rayImage)
 
-    //play the laser
+    //play the laser sound effect
     //laser.play()
   }
 
@@ -128,7 +132,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function drawRocks(){
     let image
 
-    if (hitCounter >1){
+    if (hitCounter >1 && hitCounter < 5){
+      image = droidfighterImage
+    }else if (hitCounter >=5){
       image = tiefighterImage
     }else{
       image = ship4Image
@@ -197,14 +203,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
   }
 
+
+///////////////main drawing loop ////////////////////////
+
   function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-
+    //rendering functions
     drawPlayer()
     drawScore()
     drawRocks()
     drawHitPercentage()
+    drawBullets()
+
+    // collision check functions
+    checkBulletCollision()
+    checkShipCollision()
 
     if (hitCounter === 2){
       ctx.font = "16px 'Press Start 2p'";
@@ -212,10 +226,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
       ctx.fillText("NEW SHIP", canvas.width*0.3, canvas.height/2);
     }
 
+    // now we deploy a rock
+    if (timer %rockDelay===0){
+      drawInitialRock()
+    }
 
-    //renderCoin()
-
-
+    ////////////////////////////movements
     //right movement
     if (rightPressed && ((player.x+player.radius) < canvas.width)){
       player.x +=player.dx
@@ -237,21 +253,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
       player.y += player.dy
 
     }
+    //////////////////////////////////////////////////
 
     //shoot
     if (spacePressed && timer %bulletDelay===0){
       drawInitialBullet()
-    }
-
-    //loop over the bullets and draw them
-    drawBullets()
-    checkBulletCollision()
-    checkShipCollision()
-
-
-    // now we deploy a rock
-    if (timer %rockDelay===0){
-      drawInitialRock()
     }
 
 
@@ -265,7 +271,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }//end draw
 
 
-
+  ///////function for checking keys
   function keyDownHandler(e) {
   //right
     if(e.keyCode == 68) {
@@ -282,7 +288,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     //space bar
   }else if (e.keyCode == 74){
       spacePressed = true
-
     }
   }
 
@@ -303,14 +308,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
     //j pressed for shoot
   }else if (e.keyCode == 74){
       spacePressed = false
-
     }
   }
 
 
 
-  document.addEventListener("keydown", keyDownHandler, false)
-  document.addEventListener("keyup", keyUpHandler, false)
 
 
 
@@ -318,4 +320,5 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 
-  })
+
+}) //end main event listener
