@@ -83,15 +83,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
   function drawScore() {
-  ctx.font = "16px Arial";
+  ctx.font = "12px 'Press Start 2p'";
   ctx.fillStyle = "white";
   ctx.fillText("Score: "+hitCounter, 8, 20);
   }
 
   function drawHitPercentage(){
-    ctx.font = "16px Arial";
+    ctx.font = "12px 'Press Start 2p'";
     ctx.fillStyle = "white";
-    ctx.fillText("Hit Percentage: "+Math.floor((100*hitCounter/bulletCounter))+"%", 335, 20);
+    ctx.fillText("Hit %: "+Math.floor((100*hitCounter/bulletCounter))+"%", 340, 20);
   }
 
 
@@ -207,7 +207,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     drawHitPercentage()
 
     if (hitCounter === 2){
-      ctx.font = "32px Arial";
+      ctx.font = "16px 'Press Start 2p'";
       ctx.fillStyle = "white";
       ctx.fillText("NEW SHIP", canvas.width*0.3, canvas.height/2);
     }
