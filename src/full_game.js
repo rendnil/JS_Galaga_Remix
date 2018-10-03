@@ -18,12 +18,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const ctx2 = canvas2.getContext("2d")
   const ctx = canvas.getContext('2d')
 
+
+//image elements
   const coinImage = document.getElementById("coin-img")
   const rockImage = document.getElementById("y-img")
-  const shipImage = document.getElementById("ship-img")
+  const ship1Image = document.getElementById("ship1-img")
   const burnerImage = document.getElementById("burner-img")
   const rayImage = document.getElementById("ray-img")
   const ship4Image = document.getElementById("ship4-img")
+  const xwingImage = document.getElementById("xwing-img")
+  const tiefighterImage = document.getElementById("tie-fighter-img")
+
 
   let laser = new Sound("./public/laser3.wav")
 
@@ -90,12 +95,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
 
-  function drawShip(){
-    player.render(ctx, shipImage)
+  function drawPlayer(){
+    let image
+
+    if(hitCounter >1){
+      image = xwingImage
+    }else{
+
+      image = ship1Image
+    }
+    player.render(ctx, image)
   }
 
   function drawInitialBullet(){
     let newBullet = new Bullet({x: player.x, y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
+    newBullet.renderSingle(ctx, rayImage)
     newBullet.renderSingle(ctx, rayImage)
 
     //play the laser
@@ -112,7 +126,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
   function drawRocks(){
-    Rock.renderAll(ctx, ship4Image)
+    let image
+
+    if (hitCounter >1){
+      image = tiefighterImage
+    }else{
+      image = ship4Image
+    }
+
+    Rock.renderAll(ctx, image)
   }
 
 
@@ -179,10 +201,16 @@ document.addEventListener("DOMContentLoaded", ()=>{
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
 
-    drawShip()
+    drawPlayer()
     drawScore()
     drawRocks()
     drawHitPercentage()
+
+    if (hitCounter === 2){
+      ctx.font = "32px Arial";
+      ctx.fillStyle = "white";
+      ctx.fillText("NEW SHIP", canvas.width*0.3, canvas.height/2);
+    }
 
 
     //renderCoin()
@@ -219,10 +247,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     drawBullets()
     checkBulletCollision()
     checkShipCollision()
-
-
-
-
 
 
     // now we deploy a rock
