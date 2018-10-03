@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const ship1Image = document.getElementById("ship1-img")
   const burnerImage = document.getElementById("burner-img")
   const rayImage = document.getElementById("ray-img")
+  const redRayImage = document.getElementById("red-ray-img")
   const ship4Image = document.getElementById("ship4-img")
   const xwingImage = document.getElementById("xwing-img")
   const tiefighterImage = document.getElementById("tie-fighter-img")
@@ -39,6 +40,14 @@ document.addEventListener("DOMContentLoaded", ()=>{
   //ctx.canvas.width = window.innerWidth
   //ctx.canvas.height = window.innerHeight
 
+  //level
+  let level = 1
+
+
+  //initial images to use
+  let enemyImage = ship4Image
+  let playerImage = ship1Image
+  let bulletImage = rayImage
 
 
   //initial ship specs
@@ -55,6 +64,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
   let bulletRadius = 3
   let bulletDy = 5
   let bulletDelay = 5
+
+  let bulletType = 1
 
 
   //initial rock specs
@@ -86,42 +97,75 @@ document.addEventListener("DOMContentLoaded", ()=>{
     return Math.random()
   }
 
+
+  function determineLevel(){
+    if (hitCounter >2 && hitCounter<=5){
+      level = 2
+      enemyImage = droidfighterImage
+      playerImage = xwingImage
+      bulletType = 2
+      bulletImage = redRayImage
+
+    }else if (hitCounter>5){
+      level = 3
+      enemyImage = tiefighterImage
+    }
+  }
+
+  function gameOver(){
+    gameInProgress = false
+    ctx.font = "32px 'Press Start 2p'";
+    ctx.fillStyle = "white";
+    ctx.fillText("GAME OVER", 100, 250);
+  }
+
+  function drawLevel(){
+    ctx.font = "12px 'Press Start 2p'";
+    ctx.fillStyle = "white";
+    ctx.fillText("Level: "+level, 8, 20);
+  }
+
   function drawScore() {
   ctx.font = "12px 'Press Start 2p'";
   ctx.fillStyle = "white";
-  ctx.fillText("Score:"+hitCounter, 8, 20);
+  ctx.fillText("Score: "+hitCounter, 380, 20);
   }
 
   function drawHitPercentage(){
     ctx.font = "12px 'Press Start 2p'";
     ctx.fillStyle = "white";
-    ctx.fillText("Hit%: "+Math.floor((100*hitCounter/bulletCounter))+"%", 340, 20);
+    ctx.fillText("Hit%: "+Math.floor((100*hitCounter/bulletCounter))+"%", 380, 50);
   }
 
 
   function drawPlayer(){
-    let image
-
-    if(hitCounter >1){
-      image = xwingImage
-    }else{
-
-      image = ship1Image
-    }
-    player.render(ctx, image)
+    player.render(ctx, playerImage)
   }
 
   function drawInitialBullet(){
-    let newBullet = new Bullet({x: player.x, y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
-    newBullet.renderSingle(ctx, rayImage)
-    newBullet.renderSingle(ctx, rayImage)
+
+
+    if (bulletType ===1){
+      let newBullet = new Bullet({x: player.x, y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
+      newBullet.renderSingle(ctx, rayImage)
+
+      //shoot dual bullets
+    }else if(bulletType ===2){
+      let newBullet1 = new Bullet({x: player.x-(1.1*player.radius), y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
+      let newBullet2= new Bullet({x: player.x+(0.9*player.radius), y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
+
+    }
+
+
 
     //play the laser sound effect
     //laser.play()
   }
 
   function drawBullets(){
-    Bullet.renderAll(ctx, rayImage)
+    
+    Bullet.renderAll(ctx, bulletImage)
+
   }
 
   function drawInitialRock(){
@@ -130,17 +174,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
   function drawRocks(){
-    let image
-
-    if (hitCounter >1 && hitCounter < 5){
-      image = droidfighterImage
-    }else if (hitCounter >=5){
-      image = tiefighterImage
-    }else{
-      image = ship4Image
-    }
-
-    Rock.renderAll(ctx, image)
+    Rock.renderAll(ctx, enemyImage)
   }
 
 
@@ -162,8 +196,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
       if((rock.x>(player.x-player.radius)) && (rock.x<(player.x+player.radius)) && (rock.y> (player.y-player.radius)) && (rock.y< (player.y+player.radius)) ){
         //alert("you suck")
-        gameInProgress = false
-        canvas.style = "display:none"
+        gameOver()
+
 
       }
     })
@@ -209,22 +243,24 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+    determineLevel()
     //rendering functions
-    drawPlayer()
     drawScore()
-    drawRocks()
     drawHitPercentage()
+    drawLevel()
+    drawPlayer()
+    drawRocks()
     drawBullets()
 
     // collision check functions
     checkBulletCollision()
     checkShipCollision()
 
-    if (hitCounter === 2){
-      ctx.font = "16px 'Press Start 2p'";
-      ctx.fillStyle = "white";
-      ctx.fillText("NEW SHIP", canvas.width*0.3, canvas.height/2);
-    }
+    // if (hitCounter === 2){
+    //   ctx.font = "16px 'Press Start 2p'";
+    //   ctx.fillStyle = "white";
+    //   ctx.fillText("NEW SHIP", canvas.width*0.3, canvas.height/2);
+    // }
 
     // now we deploy a rock
     if (timer %rockDelay===0){
