@@ -25,6 +25,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const rayImage = document.getElementById("ray-img")
   const ship4Image = document.getElementById("ship4-img")
 
+  let laser = new Sound("./public/laser3.wav")
+
   //ctx.canvas.width = window.innerWidth
   //ctx.canvas.height = window.innerHeight
 
@@ -102,7 +104,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   function drawInitialBullet(){
     let newBullet = new Bullet({x: shipX, y:(shipY-yUpFromCenter), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
+
+
     newBullet.renderSingle(ctx)
+
+    //play the laser
+    //laser.play()
   }
 
   function drawBullets(){
