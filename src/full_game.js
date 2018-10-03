@@ -30,7 +30,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const xwingImage = document.getElementById("xwing-img")
   const tiefighterImage = document.getElementById("tie-fighter-img")
   const droidfighterImage = document.getElementById("doid-fighter-img")
-
+  const darthVaderImage = document.getElementById("darth-vader-img")
+  const benderImage = document.getElementById("bender-img")
 
   let laser = new Sound("./public/laser3.wav")
 
@@ -105,18 +106,36 @@ document.addEventListener("DOMContentLoaded", ()=>{
       playerImage = xwingImage
       bulletType = 2
       bulletImage = redRayImage
+      rockDelay = 60
+        if (hitCounter ===3){
+          levelMessage()
+        }
 
     }else if (hitCounter>5){
       level = 3
+      bulletDelay = 1
       enemyImage = tiefighterImage
+      if (hitCounter ===6){
+        levelMessage()
+      }
     }
+  }
+
+  function levelMessage(){
+
+    ctx.font = "24px 'Press Start 2p'";
+    ctx.fillStyle = "white";
+    ctx.fillText("Level: "+level, 100, 100);
+
   }
 
   function gameOver(){
     gameInProgress = false
     ctx.font = "32px 'Press Start 2p'";
     ctx.fillStyle = "white";
-    ctx.fillText("GAME OVER", 100, 250);
+    ctx.drawImage(darthVaderImage, 125, 50, 250, 200)
+    ctx.fillText("GAME OVER", 100, 300);
+
   }
 
   function drawLevel(){
@@ -163,7 +182,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
   function drawBullets(){
-    
+
     Bullet.renderAll(ctx, bulletImage)
 
   }
@@ -195,7 +214,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     rockArray.forEach((rock)=>{
 
       if((rock.x>(player.x-player.radius)) && (rock.x<(player.x+player.radius)) && (rock.y> (player.y-player.radius)) && (rock.y< (player.y+player.radius)) ){
-        //alert("you suck")
         gameOver()
 
 
@@ -255,6 +273,17 @@ document.addEventListener("DOMContentLoaded", ()=>{
     // collision check functions
     checkBulletCollision()
     checkShipCollision()
+
+
+    //initial images and text
+    if (timer <50){
+      ctx.drawImage(benderImage, 0, 300, 100, 200)
+
+      ctx.font = "32px 'Press Start 2p'";
+      ctx.fillStyle = "white";
+      ctx.fillText("START GAME", 100, 200);
+
+    }
 
     // if (hitCounter === 2){
     //   ctx.font = "16px 'Press Start 2p'";
