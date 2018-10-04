@@ -5,12 +5,29 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const startButton = document.getElementById("start-game")
   startButton.addEventListener("click", start_game)
 
+  const instructionsButton = document.getElementById("instructions")
+  instructionsButton.addEventListener("click", show_instructions)
+
+  const titleCard = document.getElementById("title-card")
+
+
+
   function start_game(){
     canvas.style = "display:block"
     startButton.style = "display:none"
     gameInProgress = true
     draw()
   }
+
+  function show_instructions(){
+    let instructionsDiv = document.createElement("div")
+    let instructionsPTag = document.createElement("p")
+    instructionsPTag.innerText = "heyo"
+    instructionsDiv.appendChild(instructionsPTag)
+    titleCard.appendChild(instructionsDiv)
+
+  }
+
 
 
   const canvas = document.getElementById('canvas')
@@ -32,6 +49,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const droidfighterImage = document.getElementById("doid-fighter-img")
   const darthVaderImage = document.getElementById("darth-vader-img")
   const benderImage = document.getElementById("bender-img")
+  const planetExpressImage = document.getElementById("planet-express-img")
 
   let laser = new Sound("./public/laser3.wav")
 
@@ -86,6 +104,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   let downPressed = false
   let upPressed = false
   let spacePressed = false
+  let enterPressed = false
 
   //sprite rendering
   function renderCoin(){
@@ -98,6 +117,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
     return Math.random()
   }
 
+  function startGameScreen(){
+    //gameInProgress = false
+    ctx.font = "24px 'Press Start 2p'";
+    ctx.fillStyle = "white";
+    //ctx.drawImage(darthVaderImage, 125, 50, 250, 200)
+    ctx.fillText("Are You Ready?", 100, 300);
+    ctx.fillText("Press Enter", 100, 300);
+
+    if (enterPressed){
+      gameInProgress=true
+    }
+  }
 
   function determineLevel(){
     if (hitCounter >2 && hitCounter<=5){
@@ -111,14 +142,23 @@ document.addEventListener("DOMContentLoaded", ()=>{
           levelMessage()
         }
 
-    }else if (hitCounter>5){
+    }else if (hitCounter>5 && hitCounter <=10){
       level = 3
       bulletDelay = 1
       enemyImage = tiefighterImage
       if (hitCounter ===6){
         levelMessage()
       }
+
+    }else if (hitCounter > 10){
+      level = 4
+
+      playerImage = planetExpressImage
+      if (hitCounter === 11){
+        levelMessage()
+      }
     }
+
   }
 
   function levelMessage(){
@@ -285,6 +325,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     }
 
+    // if (gameInProgress==false){
+    //   startGameScreen()
+    //   requestAnimationFrame(startGameScreen)
+    // }
+
     // if (hitCounter === 2){
     //   ctx.font = "16px 'Press Start 2p'";
     //   ctx.fillStyle = "white";
@@ -342,17 +387,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
     if(e.keyCode == 68) {
     rightPressed = true;
     //left
-  }else if(e.keyCode == 65) {
+    }else if(e.keyCode == 65) {
     leftPressed = true;
     //up
-  }else if (e.keyCode == 87){
+    }else if (e.keyCode == 87){
       upPressed = true;
     //down
-  }else if (e.keyCode == 83){
+    }else if (e.keyCode == 83){
       downPressed = true;
     //space bar
-  }else if (e.keyCode == 74){
+    }else if (e.keyCode == 74){
       spacePressed = true
+    }else if (e.keyCode ==13){
+      enterPressed = true
     }
   }
 
@@ -371,8 +418,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
         downPressed = false;
 
     //j pressed for shoot
-  }else if (e.keyCode == 74){
+    }else if (e.keyCode == 74){
       spacePressed = false
+    }else if (e.keyCode == 13){
+      enterPressed = false
     }
   }
 
