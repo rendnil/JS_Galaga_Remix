@@ -236,6 +236,16 @@ document.addEventListener("DOMContentLoaded", ()=>{
     Rock.renderAll(ctx, enemyImage)
   }
 
+  function explode() {
+    let wfactor = 0
+    ctx.drawImage(explosion, 64 * wfactor, 0, 64, 64, 250, 250, 64, 64)
+    if (wfactor <= 10) {
+      wfactor++
+    } else {
+      wfactor = 0
+    }
+  }
+
 
   function checkBulletCollision(){
     bulletArray.forEach((bullet)=>{
