@@ -1,5 +1,25 @@
 document.addEventListener("DOMContentLoaded", ()=>{
 
+
+  Adapter.fetch().then((data) => {
+      data.forEach((user)=>{
+        let new_user = new User(user)
+        console.log(new_user)
+      })
+      console.log(userStore)
+      //User.renderHighScore(ctx, "shooter")
+    })
+
+  let user_name = "bob"
+  Adapter.post(user_name).then(response=>response.json())
+  .then(data => console.log(data))
+
+
+
+
+
+
+
   let gameInProgress = false
 
   const startButton = document.getElementById("start-game")
@@ -8,32 +28,27 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const instructionsButton = document.getElementById("instructions")
   instructionsButton.addEventListener("click", show_instructions)
 
-  const titleCard = document.getElementById("title-card")
+  const startForm = document.getElementById("start-form")
+
+  // const titleCard = document.getElementById("title-card")
 
 
 
   function start_game(){
-    canvas.style = "display:block"
+    ///canvas.style = "display:block"
     startButton.style = "display:none"
+    instructionsButton.style = "display:none"
+    startForm.style = "display:none"
     gameInProgress = true
     draw()
-  }
-
-  function show_instructions(){
-    let instructionsDiv = document.createElement("div")
-    let instructionsPTag = document.createElement("p")
-    instructionsPTag.innerText = "heyo"
-    instructionsDiv.appendChild(instructionsPTag)
-    titleCard.appendChild(instructionsDiv)
-
   }
 
 
 
   const canvas = document.getElementById('canvas')
-  const canvas2 = document.getElementById("canvas2")
-  const ctx2 = canvas2.getContext("2d")
   const ctx = canvas.getContext('2d')
+  // const canvas2 = document.getElementById("canvas2")
+  // const ctx2 = canvas2.getContext("2d")
 
 
 //image elements
@@ -117,18 +132,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
     return Math.random()
   }
 
-  function startGameScreen(){
-    //gameInProgress = false
-    ctx.font = "24px 'Press Start 2p'";
-    ctx.fillStyle = "white";
-    //ctx.drawImage(darthVaderImage, 125, 50, 250, 200)
-    ctx.fillText("Are You Ready?", 100, 300);
-    ctx.fillText("Press Enter", 100, 300);
 
-    if (enterPressed){
-      gameInProgress=true
-    }
-  }
+
+
+
+
 
   function determineLevel(){
     if (hitCounter >2 && hitCounter<=5){
@@ -144,14 +152,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     }else if (hitCounter>5 && hitCounter <=10){
       level = 3
-      bulletDelay = 1
       enemyImage = tiefighterImage
+      rockDelay = 40
       if (hitCounter ===6){
         levelMessage()
       }
 
     }else if (hitCounter > 10){
       level = 4
+
+      bulletDelay = 1
+      bulletType = 1
+      bulletRadius = 10
+      rockDelay = 10
 
       playerImage = planetExpressImage
       if (hitCounter === 11){
@@ -175,6 +188,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
     ctx.fillStyle = "white";
     ctx.drawImage(darthVaderImage, 125, 50, 250, 200)
     ctx.fillText("GAME OVER", 100, 300);
+    User.renderHighScore(ctx, "shooter")
+  }
+
+
+
+  function show_instructions(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.font = "24px Times";
+    ctx.fillStyle = "white";
+    ctx.fillText("Keyboard Controls", 150, 100);
+    ctx.font = "18px Times"
+    ctx.fillText("Up: W", 100, 150);
+    ctx.fillText("Down: S", 100, 175);
+    ctx.fillText("Left: A", 100, 200);
+    ctx.fillText("Right: D", 100, 225);
+    ctx.fillText("Shoot: J", 250, 150);
 
   }
 
@@ -334,17 +363,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
       ctx.fillText("START GAME", 100, 200);
 
     }
-
-    // if (gameInProgress==false){
-    //   startGameScreen()
-    //   requestAnimationFrame(startGameScreen)
-    // }
-
-    // if (hitCounter === 2){
-    //   ctx.font = "16px 'Press Start 2p'";
-    //   ctx.fillStyle = "white";
-    //   ctx.fillText("NEW SHIP", canvas.width*0.3, canvas.height/2);
-    // }
 
     // now we deploy a rock
     if (timer %rockDelay===0){

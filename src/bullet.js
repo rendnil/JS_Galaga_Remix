@@ -23,9 +23,6 @@
       ctx.drawImage(rayImage, this.x, this.y, this.radius*2, this.radius*2)
       ctx.closePath()
 
-      //ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2)
-      //ctx.fillStyle = this.color
-      //ctx.fill()
     }
 
 
@@ -34,11 +31,11 @@
 
         if (bullet.visible){
         ctx.beginPath()
-        // ctx.arc(bullet.x, bullet.y, bullet.radius, 0, Math.PI*2)
-        // ctx.fillStyle = bullet.color
+
         ctx.fill()
         ctx.drawImage(rayImage, bullet.x, bullet.y, bullet.radius*2,bullet.radius*2)
         ctx.closePath()
+
         //animate
         bullet.y -= bullet.dy
       }

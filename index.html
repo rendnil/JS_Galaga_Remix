@@ -3,17 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <title>Project</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <style>
     	* { background: #eee; padding: 0; margin: 0; }
-    	canvas { background: #000; display: block; margin: auto; }
+    	canvas { background: #000; display: block; margin: auto; border: 5px solid grey;font-family: "Press Start 2P"; }
     </style>
-    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <script src="./src/full_game.js"></script>
-    <script src="./src/ship.js"></script>
     <script src="./src/bullet.js"></script>
     <script src="./src/rock.js"></script>
     <script src="./src/player.js"></script>
     <script src="./src/sound.js"></script>
+    <script src="./src/adapter.js"></script>
+    <script src="./src/user.js"></script>
 
 
 </head>
@@ -22,10 +23,11 @@
 
 <body>
 
+
 <h1 id = "title-card" style="text-align:center">Sweet Video Game</h1>
 
-<button  id = "start-game" style = "position: relative; display: flex; justify-content: center;  width:100px; height:50px">Start Game</button>
-<button  id = "instructions" style = "position: relative; display: flex; justify-content: center;  width:100px; height:50px">Instructions</button>
+<div style="margin: auto;">
+</div>
 
 <img id="ship1-img" src = "./public/ship1.png" style = "display:none">
 <img id="burner-img" src = "./public/burner.png" style = "display:none">
@@ -45,8 +47,19 @@
 
 <img id="coin-img" src = "https://banner2.kisspng.com/20180405/sye/kisspng-sprite-animation-2d-computer-graphics-explosion-sheet-5ac6d5ed2820f6.3697115615229803331644.jpg" style="display:none">
 
+
+<div style="position:relative; margin:auto ;width:800px;height:800px">
 <canvas style="display:none" id="canvas2" width="500" height="500" style="z-index:1;"></canvas>
-<canvas style="display:none" id="canvas" width="500" height="500" style="z-index:2;"></canvas>
+<canvas id="canvas" width="500" height="500" style="z-index:2;"></canvas>
+
+<form id="start-form" style="position:absolute; background: blue; left:250px;top:250px;width:250px;">
+Name:
+<input id="form-name" type="text" name="" value="">
+
+</form>
+<button  id = "start-game" style = "position: absolute; left: 250px; top: 400px; display: inline-block; justify-content: center;  width:100px; height:50px">Start Game</button>
+<button  id = "instructions" style = "position: absolute; left: 400px; top: 400px; display: inline-block; justify-content: center;  width:100px; height:50px">Instructions</button>
+</div>
 
 
 </body>
