@@ -1,24 +1,17 @@
 document.addEventListener("DOMContentLoaded", ()=>{
 
 
-  Adapter.fetch().then((data) => {
+
+
+
+  Adapter.fetchUsers().then((data) => {
       data.forEach((user)=>{
         let new_user = new User(user)
-        console.log(new_user)
       })
-      console.log(userStore)
-      //User.renderHighScore(ctx, "shooter")
     })
 
-  let user_name = "bob"
-  Adapter.post(user_name).then(response=>response.json())
-  .then(data => console.log(data))
 
-
-
-
-
-
+  let userObj = 0
 
   let gameInProgress = false
 
@@ -29,6 +22,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
   instructionsButton.addEventListener("click", show_instructions)
 
   const startForm = document.getElementById("start-form")
+  const formName = document.getElementById("form-name")
+
 
   // const titleCard = document.getElementById("title-card")
 
@@ -39,6 +34,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
     startButton.style = "display:none"
     instructionsButton.style = "display:none"
     startForm.style = "display:none"
+
+    //post user
+
+    let userName = formName.value
+    Adapter.postUser(userName).then(response => response.json())
+    .then(data=> {
+      userObj = new User(data)
+
+    })
     gameInProgress = true
     draw()
   }
@@ -65,6 +69,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const darthVaderImage = document.getElementById("darth-vader-img")
   const benderImage = document.getElementById("bender-img")
   const planetExpressImage = document.getElementById("planet-express-img")
+  const flameImage = document.getElementById("flames")
 
   let laser = new Sound("./public/laser3.wav")
 
@@ -183,6 +188,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
   function gameOver(){
+
+    //post game
+    let currentUser = userStore[userStore.length-1]
+    let gameObj = {name: "shooter", user_id: currentUser.id, score: hitCounter, hit_percentage:hitCounter/bulletCounter}
+    Adapter.postGame(gameObj)
+    currentUser.games.push(gameObj)
+
+
+    //fetch users for the high score
+    // Adapter.fetchUsers().then((data) => {
+    //     userStore.push(data[data.length-1])
+    //   })
+
+
+    User.renderHighScore(ctx, "shooter")
+
     gameInProgress = false
     ctx.font = "32px 'Press Start 2p'";
     ctx.fillStyle = "white";
@@ -265,15 +286,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
     Rock.renderAll(ctx, enemyImage)
   }
 
-  function explode() {
-    let wfactor = 0
-    ctx.drawImage(explosion, 64 * wfactor, 0, 64, 64, 250, 250, 64, 64)
-    if (wfactor <= 10) {
-      wfactor++
-    } else {
-      wfactor = 0
-    }
-  }
+  // function explode() {
+  //   let wfactor = 0
+  //   let currentTimer = timer
+  //   while (timer <= currentTimer+90) {
+  //     ctx.clearRect(0,0,canvas.width, canvas.height)
+  //     ctx.drawImage(flameImage, 64 * wfactor, 0, 64, 64, 250, 250, 64, 64)
+  //     wfactor++
+  //
+  //
+  //     }
+  //     //wfactor = 0
+  //   }
+
 
 
   function checkBulletCollision(){
@@ -282,6 +307,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
         if((bullet.x>(rock.x- rock.radius))&&(bullet.x< (rock.x + rock.radius))&&(bullet.y>(rock.y-rock.radius))&&(bullet.y<(rock.y+rock.radius))){
           rock.visible = false
           bullet.visible = false
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
           hitCounter++
         }
       })
@@ -340,8 +370,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function draw(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    determineLevel()
+
+
     //rendering functions
+    determineLevel()
     drawScore()
     drawHitPercentage()
     drawLevel()
@@ -361,6 +393,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
       ctx.font = "32px 'Press Start 2p'";
       ctx.fillStyle = "white";
       ctx.fillText("START GAME", 100, 200);
+      ctx.fillText(`${userObj.name}`, 100, 300);
 
     }
 

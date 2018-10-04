@@ -5,6 +5,7 @@
  class User {
 
    constructor(userObj){
+     this.id = userObj.id
      this.name = userObj.name
      this.games = userObj.games
      userStore.push(this)
@@ -44,17 +45,22 @@
       ctx.fillText("High Scores", 155, 365)
 
       ctx.font = "10px 'Press Start 2p'"
-      ctx.fillText("Rank", 70, 385)
-      ctx.fillText("Name", 210, 385)
-      ctx.fillText("Score", 380, 385)
+      ctx.fillText("Rank", 70, 400)
+      ctx.fillText("Name", 210, 400)
+      ctx.fillText("Score", 380, 400)
 
 
       ctx.font = "8px 'Press Start 2p'"
       scores.forEach((user, index)=>{
-        ctx.fillText(`${index+1}`, 85, ((index*15)+400));
-        ctx.fillText(`${user.name}`, 210, ((index*15)+400));
-        ctx.fillText(`${user.score}`, 395, ((index*15)+400));
+        ctx.fillText(`${index+1}`, 85, ((index*15)+415));
+        ctx.fillText(`${user.name}`, 210, ((index*15)+415));
+        ctx.fillText(`${user.score}`, 395, ((index*15)+415));
       })
+
+
+    }
+
+    static findById(){
 
 
     }
