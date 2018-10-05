@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         levelMessage()
       }
 
-    }else if (hitCounter > 10){
+    }else if (hitCounter > 10 && hitCounter <=100){
       level = 4
 
       bulletDelay = 1
@@ -175,7 +175,19 @@ document.addEventListener("DOMContentLoaded", ()=>{
       if (hitCounter === 11){
         levelMessage()
       }
+    } else if (hitCounter > 100){
+      level = 5
+
+      bulletType = 2
+      playerImage = xwingImage
+      rockDelay = 5
+
+      if (hitCounter === 100){
+        levelMessage()
+      }
     }
+
+
 
   }
 
@@ -195,11 +207,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     Adapter.postGame(gameObj)
     currentUser.games.push(gameObj)
 
-
-    //fetch users for the high score
-    // Adapter.fetchUsers().then((data) => {
-    //     userStore.push(data[data.length-1])
-    //   })
 
 
     User.renderHighScore(ctx, "shooter")
@@ -307,11 +314,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
         if((bullet.x>(rock.x- rock.radius))&&(bullet.x< (rock.x + rock.radius))&&(bullet.y>(rock.y-rock.radius))&&(bullet.y<(rock.y+rock.radius))){
           rock.visible = false
           bullet.visible = false
-          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
-          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
-          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
-          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
-          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x, rock.y, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x-rock.radius, rock.y-rock.radius, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x-rock.radius, rock.y-rock.radius, 64, 64)
+          ctx.drawImage(flameImage, 64, 0, 64, 64, rock.x-rock.radius, rock.y-rock.radius, 64, 64)
           hitCounter++
         }
       })
