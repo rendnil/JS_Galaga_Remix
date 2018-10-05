@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
 
-
+//canvas and rendering context elements
   const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
 
@@ -75,8 +75,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   document.addEventListener("keydown", keyDownHandler, false)
   document.addEventListener("keyup", keyUpHandler, false)
 
-  //ctx.canvas.width = window.innerWidth
-  //ctx.canvas.height = window.innerHeight
+
 
   //level
   let level = 1
@@ -131,28 +130,30 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
 
-
+//sets the level for the game to ramp up difficulty
   function determineLevel(){
-    if (hitCounter >2 && hitCounter<=5){
+    if (hitCounter >2 && hitCounter<=20){
       level = 2
       enemyImage = droidfighterImage
       playerImage = xwingImage
       bulletType = 2
       bulletImage = redRayImage
       rockDelay = 60
-        if (hitCounter ===3){
-          levelMessage()
-        }
 
-    }else if (hitCounter>5 && hitCounter <=10){
+      if (hitCounter ===3){
+          levelMessage()
+      }
+
+    }else if (hitCounter>20 && hitCounter <=40){
       level = 3
       enemyImage = tiefighterImage
       rockDelay = 40
-      if (hitCounter ===6){
+
+      if (hitCounter ===20){
         levelMessage()
       }
 
-    }else if (hitCounter > 10 && hitCounter <=100){
+    }else if (hitCounter > 40 && hitCounter <=100){
       level = 4
 
       bulletDelay = 1
@@ -161,9 +162,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
       rockDelay = 10
 
       playerImage = planetExpressImage
-      if (hitCounter === 11){
+
+      if (hitCounter === 40){
         levelMessage()
       }
+
     } else if (hitCounter > 100){
       level = 5
 
@@ -180,14 +183,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   }
 
+//display message at start of new level
   function levelMessage(){
 
     ctx.font = "24px 'Press Start 2p'";
     ctx.fillStyle = "white";
     ctx.fillText("Level: "+level, 100, 100);
-
   }
 
+//game over display
   function gameOver(){
 
     //post game
@@ -196,8 +200,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     Adapter.postGame(gameObj)
     currentUser.games.push(gameObj)
 
-
-
+    //show the high score board
     User.renderHighScore(ctx, "shooter")
 
     gameInProgress = false
@@ -209,7 +212,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
 
-
+//render the instructions
   function show_instructions(){
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.font = "24px Times";
@@ -225,18 +228,21 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   }
 
+//render current level at top of screen
   function drawLevel(){
     ctx.font = "12px 'Press Start 2p'";
     ctx.fillStyle = "white";
     ctx.fillText("Level: "+level, 8, 20);
   }
 
+//render the current score at top of screen
   function drawScore() {
   ctx.font = "12px 'Press Start 2p'";
   ctx.fillStyle = "white";
   ctx.fillText("Score: "+hitCounter, 375, 20);
   }
 
+//render the hit percentage at top of screen
   function drawHitPercentage(){
     ctx.font = "12px 'Press Start 2p'";
     ctx.fillStyle = "white";
@@ -244,13 +250,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
   }
 
 
+//render the player
   function drawPlayer(){
     player.render(ctx, playerImage)
   }
 
   function drawInitialBullet(){
-
-
     if (bulletType ===1){
       let newBullet = new Bullet({x: player.x, y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
       newBullet.renderSingle(ctx, rayImage)
@@ -268,36 +273,26 @@ document.addEventListener("DOMContentLoaded", ()=>{
     //laser.play()
   }
 
+//render all bullets
   function drawBullets(){
 
     Bullet.renderAll(ctx, bulletImage)
 
   }
 
+//render initital enemy
   function drawInitialRock(){
     let newRock = new Rock({x: rand()*(canvas.width), y: (rand()*canvas.height)*0.25, dx:(rand()*3), dy:(rand()*3), radius:(rand()*rockRadius)+15, color: "green", visible: true})
     newRock.renderSingle(ctx)
   }
 
+//render all enemies
   function drawRocks(){
     Rock.renderAll(ctx, enemyImage)
   }
 
-  // function explode() {
-  //   let wfactor = 0
-  //   let currentTimer = timer
-  //   while (timer <= currentTimer+90) {
-  //     ctx.clearRect(0,0,canvas.width, canvas.height)
-  //     ctx.drawImage(flameImage, 64 * wfactor, 0, 64, 64, 250, 250, 64, 64)
-  //     wfactor++
-  //
-  //
-  //     }
-  //     //wfactor = 0
-  //   }
 
-
-
+//check for collision between all bullets and all enemies
   function checkBulletCollision(){
     bulletArray.forEach((bullet)=>{
       rockArray.forEach((rock)=>{
@@ -313,56 +308,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
     })
   }
 
-  //check for collision of ship with enemy
+  //check for collision of ship with any enemy
   function checkShipCollision(){
     rockArray.forEach((rock)=>{
 
       if((rock.x>(player.x-player.radius)) && (rock.x<(player.x+player.radius)) && (rock.y> (player.y-player.radius)) && (rock.y< (player.y+player.radius)) ){
         gameOver()
-
-
       }
     })
   }
 
 
-  function generateStar(canvas, ctx, starRadius){
-			ctx.beginPath();
-			ctx.arc(starRadius + (Math.random() * canvas.width), starRadius + (Math.random() * canvas.height), starRadius*Math.random(), 0, Math.PI*2, false);
-      //ctx.arc(100, 30, starRadius, 0, Math.PI*2, false);
-
-      let rand = Math.random();
-      if(rand <= 0.5){
-				  ctx.fillStyle = "rgba(255, 255, 255, 1)";
-				  ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
-				  ctx.shadowBlur = 3;
-			}
-			else if(rand > 0.75){
-				  ctx.fillStyle = "rgba(255, 254, 196, 1)";
-				  ctx.shadowColor = "rgba(255, 254, 196, 0.5)";
-				  ctx.shadowBlur = 4;
-			}
-			else{
-				  ctx.fillStyle = "rgba(192, 247, 255, 1)";
-				  ctx.shadowColor = "rgba(192, 247, 255, 0.5)";
-				  ctx.shadowBlur = 7;
-			}
-			ctx.fill();
-	}
-
-  function drawBackground(){
-
-    if (timer < 90){
-      generateStar(canvas2, ctx2, 5)
-      requestAnimationFrame(drawBackground)
-
-    }
-  }
-
 
 ///////////////main drawing loop ////////////////////////
 
   function draw(){
+    //start by clearing the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
 
@@ -392,7 +353,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     }
 
-    // now we deploy a rock
+    // now we deploy a rock based on the delay setting
     if (timer %rockDelay===0){
       drawInitialRock()
     }

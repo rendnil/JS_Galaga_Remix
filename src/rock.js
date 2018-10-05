@@ -30,14 +30,7 @@
         if (rock.visible){
         ctx.beginPath()
         ctx.drawImage(shipImage, rock.x-rock.radius, rock.y- rock.radius, rock.radius*2, rock.radius*2)
-        // ctx.arc(rock.x, rock.y, rock.radius, 0, Math.PI*2)
-        // ctx.fillStyle = rock.color
-        // ctx.fill()
         ctx.closePath()
-
-        //   if (hitCounter > 1){
-        //   ctx.drawImage(rockImage, r.x-r.radius, r.y-r.radius, r.radius*2, r.radius*2)
-        // }else{
 
 
         //check for screen collision
@@ -45,7 +38,6 @@
         if ((rock.x <rock.radius) || ((rock.x + rock.radius) > canvas.width)){
           rock.dx = -rock.dx
         }
-
 
         //animate
         rock.y += rock.dy
@@ -57,9 +49,6 @@
         }
 
       })
-
-
-
 
     }//end render all
 

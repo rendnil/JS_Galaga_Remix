@@ -60,13 +60,6 @@
 
     }
 
-    static findById(){
-
-
-    }
-
-
-
 
 
  } //end class
