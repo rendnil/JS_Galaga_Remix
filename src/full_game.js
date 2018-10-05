@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 
-
+  //fetch the existing users
   Adapter.fetchUsers().then((data) => {
       data.forEach((user)=>{
         let new_user = new User(user)
@@ -25,12 +25,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const formName = document.getElementById("form-name")
 
 
-  // const titleCard = document.getElementById("title-card")
 
 
 
   function start_game(){
-    ///canvas.style = "display:block"
+
     startButton.style = "display:none"
     instructionsButton.style = "display:none"
     startForm.style = "display:none"
@@ -51,8 +50,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
   const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
-  // const canvas2 = document.getElementById("canvas2")
-  // const ctx2 = canvas2.getContext("2d")
+
 
 
 //image elements
@@ -70,6 +68,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const benderImage = document.getElementById("bender-img")
   const planetExpressImage = document.getElementById("planet-express-img")
   const flameImage = document.getElementById("flames")
+  const rickAndMortyImage = document.getElementById("rick-and-morty")
 
   let laser = new Sound("./public/laser3.wav")
 
@@ -126,20 +125,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   let spacePressed = false
   let enterPressed = false
 
-  //sprite rendering
-  function renderCoin(){
-    let portion = timer % 10
-    ctx.drawImage(coinImage, portion * (coinImage.width/10),0, 46, coinImage.height, canvas.width/2, canvas.height/2, coinImage.width/10, coinImage.height)
-  }
-
 
   function rand(){
     return Math.random()
   }
-
-
-
-
 
 
 
@@ -232,6 +221,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     ctx.fillText("Left: A", 100, 200);
     ctx.fillText("Right: D", 100, 225);
     ctx.fillText("Shoot: J", 250, 150);
+    ctx.drawImage(rickAndMortyImage, 275, 200, 200, 300)
 
   }
 
@@ -244,7 +234,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function drawScore() {
   ctx.font = "12px 'Press Start 2p'";
   ctx.fillStyle = "white";
-  ctx.fillText("Score: "+hitCounter, 380, 20);
+  ctx.fillText("Score: "+hitCounter, 375, 20);
   }
 
   function drawHitPercentage(){
