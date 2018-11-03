@@ -4,14 +4,14 @@ const gameEndPoint = "http://localhost:3000/api/v1/games"
 
   class Adapter {
 
-
+//method for fetching user data
     static fetchUsers(){
       return(fetch(userEndPoint)
       .then(response => response.json())
       )
     }
 
-
+//method for posting new user information
     static postUser(userName){
       return(fetch(userEndPoint,
         {method: "POST",
@@ -27,6 +27,7 @@ const gameEndPoint = "http://localhost:3000/api/v1/games"
       )
     }
 
+//method for posting new game information
     static postGame(gameObj){
       return(fetch(gameEndPoint,
         {method: "POST",

@@ -1,6 +1,6 @@
-#JS Galaga Remix
+# JS Galaga Remix
 
-##Thanks for playing this game.
+## Thanks for playing this game
 
 To start, just enter your name and click the "start" button. The game is very intuitve by design - just shoot down the enemy ships and survive.
 

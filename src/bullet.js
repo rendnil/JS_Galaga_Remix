@@ -1,6 +1,8 @@
+//class for creating bullet instances that the spaceship shoots
 
-  let bulletCounter = 0
-  const bulletArray = [ ]
+
+  let bulletCounter = 0 //used to count the number of bullets rendered
+  const bulletArray = [ ] //store information on all bullets on the screen
 
 
   class Bullet {
@@ -15,14 +17,12 @@
       this.visible = bulletObj.visible
       bulletArray.push(this)
       bulletCounter++
-
     }
 
     renderSingle(ctx, rayImage){
       ctx.beginPath()
       ctx.drawImage(rayImage, this.x, this.y, this.radius*2, this.radius*2)
       ctx.closePath()
-
     }
 
 
@@ -48,14 +48,5 @@
 
 
     }//end render all
-
-
-
-
-
-
-
-
-
 
   } //end class

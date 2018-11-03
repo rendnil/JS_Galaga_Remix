@@ -1,4 +1,5 @@
 
+//class for controlling the sounds (default: off)
 class Sound {
   constructor(src) {
     this.sound = document.createElement("audio");
@@ -14,4 +15,4 @@ class Sound {
       this.sound.pause();
     }
   }
-}
+}//end class

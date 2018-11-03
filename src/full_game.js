@@ -1,9 +1,8 @@
 document.addEventListener("DOMContentLoaded", ()=>{
 
 
-
-
   //fetch the existing users
+  //then create new User instance
   Adapter.fetchUsers().then((data) => {
       data.forEach((user)=>{
         let new_user = new User(user)
@@ -24,25 +23,23 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const startForm = document.getElementById("start-form")
   const formName = document.getElementById("form-name")
 
-
-
-
-
+//if start button is hit, metho for starting the game
   function start_game(){
 
+    //hide the initial buttons and form
     startButton.style = "display:none"
     instructionsButton.style = "display:none"
     startForm.style = "display:none"
 
-    //post user
-
+    //post user information to API
     let userName = formName.value
     Adapter.postUser(userName).then(response => response.json())
     .then(data=> {
       userObj = new User(data)
-
     })
+    //start the game
     gameInProgress = true
+    //intital drawing animation
     draw()
   }
 
@@ -68,18 +65,18 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const benderImage = document.getElementById("bender-img")
   const planetExpressImage = document.getElementById("planet-express-img")
   const flameImage = document.getElementById("flames")
-  const rickAndMortyImage = document.getElementById("rick-and-morty")
 
+
+//laser sound by default disabled
   let laser = new Sound("./public/laser3.wav")
 
   document.addEventListener("keydown", keyDownHandler, false)
   document.addEventListener("keyup", keyUpHandler, false)
 
-
+  //Initial Specifications
 
   //level
   let level = 1
-
 
   //initial images to use
   let enemyImage = ship4Image
@@ -178,17 +175,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
         levelMessage()
       }
     }
-
-
-
   }
 
 //display message at start of new level
   function levelMessage(){
-
-    ctx.font = "24px 'Press Start 2p'";
-    ctx.fillStyle = "white";
-    ctx.fillText("Level: "+level, 100, 100);
+    Message.levelMessage(ctx, level)
   }
 
 //game over display
@@ -214,18 +205,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 //render the instructions
   function show_instructions(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.font = "24px Times";
-    ctx.fillStyle = "white";
-    ctx.fillText("Keyboard Controls", 150, 100);
-    ctx.font = "18px Times"
-    ctx.fillText("Up: W", 100, 150);
-    ctx.fillText("Down: S", 100, 175);
-    ctx.fillText("Left: A", 100, 200);
-    ctx.fillText("Right: D", 100, 225);
-    ctx.fillText("Shoot: J", 250, 150);
-    ctx.drawImage(rickAndMortyImage, 275, 200, 200, 300)
 
+    Message.show_instructions(ctx)
   }
 
 //render current level at top of screen
@@ -269,15 +250,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
 
 
-    //play the laser sound effect
+    // uncomment this to play the laser sound effect upon firing
     //laser.play()
   }
 
 //render all bullets
   function drawBullets(){
-
     Bullet.renderAll(ctx, bulletImage)
-
   }
 
 //render initital enemy
@@ -325,8 +304,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
   function draw(){
     //start by clearing the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-
 
     //rendering functions
     determineLevel()
