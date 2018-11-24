@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
     })
 
 
-  let userObj = 0
+  let userObj
 
   let gameInProgress = false
 
@@ -119,11 +119,11 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
       .then(data=> {
         userObj = new User(data)
       })
-      .then(
+      .then(() => {
       //start the game
       gameInProgress = true
       //intital drawing animation
-      draw())
+      draw()})
     }
 
 //sets the level for the game to ramp up difficulty
