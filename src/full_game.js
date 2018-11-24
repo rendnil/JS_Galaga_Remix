@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", ()=>{
+document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
 
 
   //fetch the existing users
@@ -23,31 +23,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const startForm = document.getElementById("start-form")
   const formName = document.getElementById("form-name")
 
-//if start button is hit, metho for starting the game
-  function start_game(){
-
-    //hide the initial buttons and form
-    startButton.style = "display:none"
-    instructionsButton.style = "display:none"
-    startForm.style = "display:none"
-
-    //post user information to API
-    let userName = formName.value
-    Adapter.postUser(userName).then(response => response.json())
-    .then(data=> {
-      userObj = new User(data)
-    })
-    //start the game
-    gameInProgress = true
-    //intital drawing animation
-    draw()
-  }
-
 
 //canvas and rendering context elements
   const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
-
 
 
 //image elements
@@ -126,6 +105,25 @@ document.addEventListener("DOMContentLoaded", ()=>{
     return Math.random()
   }
 
+  //if start button is hit, method for starting the game
+    function start_game(){
+
+      //hide the initial buttons and form
+      startButton.style = "display:none"
+      instructionsButton.style = "display:none"
+      startForm.style = "display:none"
+
+      //post user information to API
+      let userName = formName.value
+      Adapter.postUser(userName).then(response => response.json())
+      .then(data=> {
+        userObj = new User(data)
+      })
+      //start the game
+      gameInProgress = true
+      //intital drawing animation
+      draw()
+    }
 
 //sets the level for the game to ramp up difficulty
   function determineLevel(){
@@ -247,9 +245,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
       let newBullet2= new Bullet({x: player.x+(0.9*player.radius), y:(player.y-player.radius), radius: bulletRadius, dx: 0, dy: bulletDy, color: "red", visible: true})
 
     }
-
-
-
     // uncomment this to play the laser sound effect upon firing
     //laser.play()
   }
@@ -327,7 +322,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
       ctx.fillStyle = "white";
       ctx.fillText("START GAME", 100, 200);
       ctx.fillText(`${userObj.name}`, 100, 300);
-
     }
 
     // now we deploy a rock based on the delay setting
@@ -418,15 +412,5 @@ document.addEventListener("DOMContentLoaded", ()=>{
       enterPressed = false
     }
   }
-
-
-
-
-
-
-
-
-
-
 
 }) //end main event listener
