@@ -119,10 +119,11 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
       .then(data=> {
         userObj = new User(data)
       })
+      .then(
       //start the game
       gameInProgress = true
       //intital drawing animation
-      draw()
+      draw())
     }
 
 //sets the level for the game to ramp up difficulty
