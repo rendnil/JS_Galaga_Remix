@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
   const instructionsButton = document.getElementById("instructions")
   instructionsButton.addEventListener("click", show_instructions)
 
+  const gameTitle = document.getElementById("start-title")
   const startForm = document.getElementById("start-form")
   const formName = document.getElementById("form-name")
 
@@ -112,6 +113,7 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
       startButton.style = "display:none"
       instructionsButton.style = "display:none"
       startForm.style = "display:none"
+      gameTitle.style = "display:none"
 
       //post user information to API
       let userName = formName.value
