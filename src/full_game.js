@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
   const startForm = document.getElementById("start-form")
   const formName = document.getElementById("form-name")
 
+  const restartButton = document.getElementById("restart-game")
+  restartButton.addEventListener("click", restartGame)
 
 //canvas and rendering context elements
   const canvas = document.getElementById('canvas')
@@ -201,6 +203,13 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
     ctx.drawImage(darthVaderImage, 125, 50, 250, 200)
     ctx.fillText("GAME OVER", 100, 300);
     User.renderHighScore(ctx, "shooter")
+
+
+  }
+
+  //allow the users to restart the game by refreshing the client
+  function restartGame(){
+    location.reload()
   }
 
 
