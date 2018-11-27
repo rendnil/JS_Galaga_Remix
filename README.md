@@ -1,5 +1,7 @@
 # JS Galaga Remix
 
+## [Play Game](https://rendnil.github.io/JS_Galaga_Remix/)
+
 ## Thanks for playing this game
 
 To start, just enter your name and click the "start" button. The game is very intuitve by design - just shoot down the enemy ships and survive.
