@@ -1,5 +1,6 @@
 // const userEndPoint = "http://localhost:3000/api/v1/users"
 // const gameEndPoint = "http://localhost:3000/api/v1/games"
+
 const userEndPoint = "https://damp-stream-64267.herokuapp.com/api/v1/users"
 const gameEndPoint = "https://damp-stream-64267.herokuapp.com/api/v1/games"
 

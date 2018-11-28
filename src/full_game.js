@@ -1,3 +1,5 @@
+
+
 document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
 
 
@@ -122,6 +124,7 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
       Adapter.postUser(userName).then(response => response.json())
       .then(data=> {
         userObj = new User(data)
+        levelMessage()
       })
       .then(() => {
       //start the game
