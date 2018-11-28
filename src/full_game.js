@@ -121,8 +121,8 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
 
       //post user information to API
       let userName = formName.value
+      levelMessage()
       Adapter.postUser(userName)
-      .then(()=>levelMessage())
       .then(response => response.json())
       .then(data=> {
         userObj = new User(data)
