@@ -121,10 +121,11 @@ document.addEventListener("DOMContentLoaded", ()=>{ //ensure DOM is loaded
 
       //post user information to API
       let userName = formName.value
-      Adapter.postUser(userName).then(response => response.json())
+      Adapter.postUser(userName)
+      .then(()=>levelMessage())
+      .then(response => response.json())
       .then(data=> {
         userObj = new User(data)
-        levelMessage()
       })
       .then(() => {
       //start the game
